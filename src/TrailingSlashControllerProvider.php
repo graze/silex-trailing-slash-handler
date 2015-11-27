@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
  * A controller provider to convert requests missing a trailing slash into an
  * internal sub-request with a slash appended to the requests url.
  *
- * NOTE: You must register all other routes with a trailing slash.
+ * NOTE: You _should_ define all other routes with a trailing slash.
  *
  * Usage:
  *
@@ -49,7 +49,7 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
                 $app['request']->getContent()
             );
 
-            // Make an internal sub-request based off the one that would have 404'd.
+            // Make an internal sub-request based off the request that would have 404'd.
             // http://silex.sensiolabs.org/doc/usage.html#forwards
             return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
         };
@@ -64,7 +64,7 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
          */
         $controllers->match('/{resource}', $handler)
                     ->assert('resource', '.*(?<!\/)$')
-                    ->bind('trailing_slash_internal_redirect');
+                    ->bind('no_trailing_slash_handler');
 
         return $controllers;
     }
@@ -76,9 +76,7 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
     {
         /**
          * We override the default RedirectableUrlMatcher so that Silex doesn't
-         * respond with 301 to GET requests missing a trailing slash, so that
-         * like POST requests (and the rest), the `trailing_slash_internal_redirect`
-         * route will handle it.
+         * respond with 301 to GET requests missing a trailing slash.
          */
         $app['url_matcher'] = $app->share(function () use ($app) {
             if ($app['logger']) {
