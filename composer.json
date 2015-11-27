@@ -1,0 +1,41 @@
+{
+    "name": "graze/silex-trailing-slash-handler",
+
+    "description": "Handle requests missing a trailing slash in Silex by appending a slash and issuing an internal sub-request.",
+
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "Graze Developers",
+            "email": "developers@graze.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "Graze\\Silex\\ControllerProvider\\": "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Graze\\Silex\\Tests\\ControllerProvider\\": "tests/"
+        }
+    },
+
+    "require": {
+        "silex/silex": "^1.0"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "^5.0",
+        "mockery/mockery": "^0.9.4"
+    },
+
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit --colors=always tests/"
+        ]
+    }
+}
