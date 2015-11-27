@@ -5,9 +5,11 @@
 [![PHP ~5.5][ico-engine]][lang]
 [![MIT Licensed][ico-license]][license]
 
-:leftwards_arrow_with_hook: Handle requests missing a trailing slash in Silex by appending a slash and issuing an internal sub-request.
+Handle requests missing a trailing slash in Silex by
+appending a slash and issuing an internal sub-request.
 
-See [silexphp/Silex #149](https://github.com/silexphp/Silex/issues/149) for more information about the default Silex routing behavior.
+See [silexphp/Silex #149](https://github.com/silexphp/Silex/issues/149) for more
+information about the default Silex routing behavior.
 
 <!-- Links -->
 [travis]: https://travis-ci.org/graze/silex-trailing-slash-handler
@@ -27,7 +29,14 @@ See [silexphp/Silex #149](https://github.com/silexphp/Silex/issues/149) for more
 ~$ composer require graze/silex-trailing-slash-handler
 ```
 
+:information_source: Define all your routes first before mounting the controller
+provider so routes with no trailing slash are still able to be matched.
+
 ```php
+$app->get('/', function () {
+    return 'Hello World!';
+})
+
 $provider = new \Graze\Silex\ControllerProvider\TrailingSlashControllerProvider();
 
 $app->register($provider);
