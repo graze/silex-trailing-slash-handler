@@ -29,7 +29,7 @@
     },
 
     "require": {
-        "silex/silex": "^1.0"
+        "silex/silex": "^1.2"
     },
 
     "require-dev": {
