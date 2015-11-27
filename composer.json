@@ -33,8 +33,9 @@
     },
 
     "require-dev": {
+        "mockery/mockery": "^0.9.4",
         "phpunit/phpunit": "^5.0",
-        "mockery/mockery": "^0.9.4"
+        "roave/security-advisories": "dev-master"
     },
 
     "scripts": {
