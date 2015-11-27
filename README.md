@@ -6,6 +6,10 @@ See [silexphp/Silex #149](https://github.com/silexphp/Silex/issues/149) for more
 
 ## Usage
 
+```bash
+~$ composer require graze/silex-trailing-slash-handler
+```
+
 ```php
 $provider = new \Graze\Silex\ControllerProvider\TrailingSlashControllerProvider();
 
