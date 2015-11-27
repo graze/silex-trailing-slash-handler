@@ -77,7 +77,7 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
         /**
          * We override the default RedirectableUrlMatcher so that Silex doesn't
          * respond with 301 to GET requests missing a trailing slash, so that
-         * like POST requests (and the rest), the internal.trailing_slash_redirect
+         * like POST requests (and the rest), the `trailing_slash_internal_redirect`
          * route will handle it.
          */
         $app['url_matcher'] = $app->share(function () use ($app) {
