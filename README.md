@@ -29,9 +29,6 @@ information about the default Silex routing behavior.
 ~$ composer require graze/silex-trailing-slash-handler
 ```
 
-:information_source: Define all your routes first before mounting the controller
-provider so routes with no trailing slash are still able to be matched.
-
 ```php
 $app->get('/', function () {
     return 'Hello World!';
@@ -42,6 +39,9 @@ $provider = new \Graze\Silex\ControllerProvider\TrailingSlashControllerProvider(
 $app->register($provider);
 $app->mount('/', $provider);
 ```
+
+:information_source: Define all your routes first before mounting the controller
+provider if you want routes with no trailing slash to be matched.
 
 ## License
 

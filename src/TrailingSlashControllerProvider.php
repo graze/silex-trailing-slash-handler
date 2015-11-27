@@ -13,8 +13,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
  * A controller provider to convert requests missing a trailing slash into an
  * internal sub-request with a slash appended to the requests url.
  *
- * NOTE: You _must_ either mount this class after all other routes are defined,
- * or define _all_ other routes with a trailing slash.
+ * NOTE: You _should_ define all other routes with a trailing slash.
  *
  * Usage:
  *
@@ -50,7 +49,7 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
                 $app['request']->getContent()
             );
 
-            // Make an internal sub-request based off the one that would have 404'd.
+            // Make an internal sub-request based off the request that would have 404'd.
             // http://silex.sensiolabs.org/doc/usage.html#forwards
             return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
         };

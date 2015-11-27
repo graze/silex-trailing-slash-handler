@@ -91,7 +91,7 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is just to show that when defining routes the trailing slash is
+     * This is just to show when defining routes that the trailing slash is
      * required when the controller provider is mounted before any other routes.
      */
     public function testWillRespondWithNotFoundForRouteWithNoTrailingSlashWhenMountedFirst()
@@ -111,8 +111,8 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is just to show that when defining routes before mounting the controller
-     * provider they should be ok.
+     * This is just to show when defining routes with no trailing slash before
+     * mounting the controller provider they should respond as expected.
      */
     public function testWillRespondWithOkForRouteWithNoTrailingSlashWhenMountedLast()
     {
