@@ -45,6 +45,6 @@ provider if you want routes with no trailing slash to be matched.
 
 ## License
 
-The content of this library is released under the **MIT License** by **Nature Delivered Ltd.**.
+The content of this library is released under the **MIT License** by **Nature Delivered Ltd.**
 
 You can find a copy of this license in [`LICENSE`][license] or at http://opensource.org/licenses/mit.
