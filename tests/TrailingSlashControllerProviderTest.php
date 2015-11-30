@@ -3,6 +3,7 @@
 namespace Graze\Silex\Tests\ControllerProvider;
 
 use Graze\Silex\ControllerProvider\TrailingSlashControllerProvider;
+use Mockery;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
@@ -25,6 +26,7 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     public function testShouldRegisterUrlMatcher()
     {
         $app = new Application();
+
         $app->register(new TrailingSlashControllerProvider());
 
         $this->assertInstanceOf(UrlMatcher::class, $app['url_matcher']);
@@ -34,8 +36,9 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $this->assertInstanceOf(
-            Application::class,
+        // `mount` should return the application.
+        $this->assertSame(
+            $app,
             $app->mount('/', new TrailingSlashControllerProvider())
         );
     }
@@ -46,6 +49,48 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     public function testShouldRespondOkWithoutTrailingSlash($method)
     {
         $app = new Application();
+
+        $app->match('/foo/', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $app->match('/foo/bar/', function () {
+            return 'What\'s the question?';
+        })->method($method);
+
+        $app->match('/foo/bar/baz/', function () {
+            return 'Fizz Buzz';
+        })->method($method);
+
+        $app->register(new TrailingSlashControllerProvider());
+        $app->mount('/', new TrailingSlashControllerProvider());
+
+        $request = Request::create('/foo', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar/baz', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * This just shows that the mount order for the controller provider doesn't
+     * matter when all routes are defined with a trailing slash.
+     *
+     * @dataProvider requestMethodProvider
+     */
+    public function testShouldRespondOkWithoutTrailingSlashWhenMountedFirst($method)
+    {
+        $app = new Application();
+
         $app->register(new TrailingSlashControllerProvider());
         $app->mount('/', new TrailingSlashControllerProvider());
 
@@ -53,7 +98,73 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
             return 'hunter42';
         })->method($method);
 
+        $app->match('/foo/bar/', function () {
+            return 'What\'s the question?';
+        })->method($method);
+
+        $app->match('/foo/bar/baz/', function () {
+            return 'Fizz Buzz';
+        })->method($method);
+
         $request = Request::create('/foo', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar/baz', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * This just shows that the controller provider is compatiable with other
+     * controller providers.
+     *
+     * @dataProvider requestMethodProvider
+     */
+    public function testShouldRespondOkWithoutTrailingSlashWithMountedControllers($method)
+    {
+        $app = new Application();
+
+        $app->register(new TrailingSlashControllerProvider());
+        $app->mount('/', new TrailingSlashControllerProvider());
+
+        $controller = $app['controllers_factory'];
+
+        $controller->match('/foo/', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $controller->match('/foo/bar/', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $controller->match('/foo/bar/baz/', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $provider = Mockery::mock(ControllerProviderInterface::class);
+        $provider->shouldReceive('connect')->andReturn($controller);
+
+        $app->mount('/', $provider);
+
+        $request = Request::create('/foo', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar/baz', $method);
         $response = $app->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -77,14 +188,33 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     public function testShouldRespondOkToHeadWithoutTrailingSlash()
     {
         $app = new Application();
-        $app->register(new TrailingSlashControllerProvider());
-        $app->mount('/', new TrailingSlashControllerProvider());
 
         $app->get('/foo/', function () {
             return 'hunter42';
         });
 
+        $app->get('/foo/bar/', function () {
+            return 'What\'s the question?';
+        });
+
+        $app->get('/foo/bar/baz/', function () {
+            return 'Fizz Buzz';
+        });
+
+        $app->register(new TrailingSlashControllerProvider());
+        $app->mount('/', new TrailingSlashControllerProvider());
+
         $request = Request::create('/foo', 'HEAD');
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', 'HEAD');
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar/baz', 'HEAD');
         $response = $app->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -93,18 +223,30 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * This is just to show when defining routes that the trailing slash is
      * required when the controller provider is mounted before any other routes.
+     *
+     * @dataProvider requestMethodProvider
      */
-    public function testWillRespondWithNotFoundForRouteWithNoTrailingSlashWhenMountedFirst()
+    public function testWillRespondWithNotFoundForRouteWithNoTrailingSlashWhenMountedFirst($method)
     {
         $app = new Application();
+
         $app->register(new TrailingSlashControllerProvider());
         $app->mount('/', new TrailingSlashControllerProvider());
 
-        $app->get('/foo', function () {
+        $app->match('/foo', function () {
             return 'hunter42';
-        });
+        })->method($method);
 
-        $request = Request::create('/foo');
+        $app->match('/foo/bar', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $request = Request::create('/foo', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(404, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', $method);
         $response = $app->handle($request);
 
         $this->assertEquals(404, $response->getStatusCode());
@@ -113,19 +255,30 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * This is just to show when defining routes with no trailing slash before
      * mounting the controller provider they should respond as expected.
+     *
+     * @dataProvider requestMethodProvider
      */
-    public function testWillRespondWithOkForRouteWithNoTrailingSlashWhenMountedLast()
+    public function testWillRespondWithOkForRouteWithNoTrailingSlashWhenMountedLast($method)
     {
         $app = new Application();
-        $app->register(new TrailingSlashControllerProvider());
 
-        $app->get('/foo', function () {
+        $app->match('/foo', function () {
             return 'hunter42';
-        });
+        })->method($method);
 
+        $app->match('/foo/bar', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $app->register(new TrailingSlashControllerProvider());
         $app->mount('/', new TrailingSlashControllerProvider());
 
-        $request = Request::create('/foo');
+        $request = Request::create('/foo', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', $method);
         $response = $app->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
