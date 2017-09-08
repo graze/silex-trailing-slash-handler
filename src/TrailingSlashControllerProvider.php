@@ -42,11 +42,15 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
             $request = Request::create(
                 '/' . $resource . '/',
                 $app['request']->getMethod(),
-                array_merge($app['request']->query->all(), $app['request']->request->all()),
+                [],
                 $app['request']->cookies->all(),
                 $app['request']->files->all(),
                 $app['request']->server->all(),
                 $app['request']->getContent()
+            );
+            $request = $request->duplicate(
+                $app['request']->query->all(),
+                $app['request']->request->all()
             );
             $request->headers->replace($app['request']->headers->all());
 
