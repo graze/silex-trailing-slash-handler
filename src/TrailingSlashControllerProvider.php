@@ -48,6 +48,7 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
                 $app['request']->server->all(),
                 $app['request']->getContent()
             );
+            $request->headers->replace($app['request']->headers->all());
 
             // Make an internal sub-request based off the request that would have 404'd.
             // http://silex.sensiolabs.org/doc/usage.html#forwards
