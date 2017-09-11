@@ -283,4 +283,47 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    /**
+     * Test the case in which a request should have both query
+     * string params and body params
+     */
+    public function testWillHandleQueryAndBodySeparately()
+    {
+        $app = new Application();
+
+        $app->match('/foo/', function (Request $request) {
+            $response = [
+                'query' => $request->query->all(),
+                'request' => $request->request->all()
+            ];
+            return json_encode($response, true);
+        })->method('POST');
+
+        $app->register(new TrailingSlashControllerProvider());
+        $app->mount('/', new TrailingSlashControllerProvider());
+
+        $request = Request::create('/foo?q=1', 'POST', ['r' => 2]);
+        $response = $app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+        $body = json_decode($response->getContent(), true);
+        $this->assertRequestQuery($body);
+
+        $request = Request::create('/foo/?q=1', 'POST', ['r' => 2]);
+        $response = $app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+        $body = json_decode($response->getContent(), true);
+        $this->assertRequestQuery($body);
+    }
+
+    private function assertRequestQuery($body) {
+        $this->assertArrayHasKey('query', $body);
+        $this->assertArrayHasKey('request', $body);
+
+        $this->assertArrayHasKey('q', $body['query']);
+        $this->assertEquals(1, $body['query']['q']);
+
+        $this->assertArrayHasKey('r', $body['request']);
+        $this->assertEquals(2, $body['request']['r']);
+    }
 }
