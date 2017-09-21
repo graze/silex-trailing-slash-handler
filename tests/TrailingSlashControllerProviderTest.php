@@ -4,10 +4,10 @@ namespace Graze\Silex\Tests\ControllerProvider;
 
 use Graze\Silex\ControllerProvider\TrailingSlashControllerProvider;
 use Mockery;
+use Pimple\ServiceProviderInterface;
 use Psr\Log\LoggerInterface;
 use Silex\Application;
-use Silex\ControllerProviderInterface;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 

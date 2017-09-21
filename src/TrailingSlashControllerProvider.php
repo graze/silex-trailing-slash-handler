@@ -2,9 +2,10 @@
 
 namespace Graze\Silex\ControllerProvider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ControllerProviderInterface;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -75,29 +76,20 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
     }
 
     /**
-     * @param Application $app
+     * @param Container $app
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         /**
          * We override the default RedirectableUrlMatcher so that Silex doesn't
          * respond with 301 to GET requests missing a trailing slash.
          */
-        $app['url_matcher'] = $app->share(
-            function () use ($app) {
-                if ($app['logger']) {
-                    $app['logger']->debug(sprintf('Overriding the default Silex url matcher to %s.', UrlMatcher::class));
-                }
-
-                return new UrlMatcher($app['routes'], $app['request_context']);
+        $app['url_matcher'] = function (Container $app) {
+            if ($app['logger']) {
+                $app['logger']->debug(sprintf('Overriding the default Silex url matcher to %s.', UrlMatcher::class));
             }
-        );
-    }
 
-    /**
-     * @param Application $app
-     */
-    public function boot(Application $app)
-    {
+            return new UrlMatcher($app['routes'], $app['request_context']);
+        };
     }
 }
