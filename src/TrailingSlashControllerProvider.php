@@ -68,8 +68,8 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
          * @link https://stackoverflow.com/questions/16398471/regex-not-ending-with
          */
         $controllers->match('/{resource}', $handler)
-            ->assert('resource', '.*(?<!\/)$')
-            ->bind('no_trailing_slash_handler');
+                    ->assert('resource', '.*(?<!\/)$')
+                    ->bind('no_trailing_slash_handler');
 
         return $controllers;
     }
