@@ -1,8 +1,8 @@
 SHELL = /bin/sh
 IMAGE ?= graze/php-alpine
 
-.PHONY: install clean help
-.PHONY: test test-unit test-matrix
+.PHONY: install update update-lowest help
+.PHONY: test test-unit test-matrix test-matrix-lowest
 
 .SILENT: help
 
@@ -17,10 +17,10 @@ update-lowest: ## Update to the lowest stable dependencies
 
 composer-%: ## Run a composer command, `make "composer-<command> [...]"`.
 	docker run -it --rm \
-	-v $$(pwd):/app \
-	-v ~/.composer:/tmp \
-	-v ~/.ssh:/root/.ssh:ro \
-	composer/composer --ansi --no-interaction $*
+        -v $$(pwd):/app \
+        -v ~/.composer:/tmp \
+        -v ~/.ssh:/root/.ssh:ro \
+        composer --ansi --no-interaction $*
 
 test: ## Run the unit testsuites.
 test: test-unit
