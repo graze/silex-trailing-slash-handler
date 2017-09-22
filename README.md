@@ -18,16 +18,16 @@ information about the default Silex routing behavior.
 [lang]: https://secure.php.net
 [package]: https://packagist.org/packages/graze/silex-trailing-slash-handler
 [license]: https://github.com/graze/silex-trailing-slash-handler/blob/master/LICENSE
-[coverage]: https://scrutinizer-ci.com/g/graze/dog-statsd/code-structure
-[quality]: https://scrutinizer-ci.com/g/graze/dog-statsd
+[coverage]: https://scrutinizer-ci.com/g/graze/silex-trailing-slash-handler/code-structure
+[quality]: https://scrutinizer-ci.com/g/graze/silex-trailing-slash-handler
 
 <!-- Images -->
 [ico-license]: https://img.shields.io/packagist/l/graze/silex-trailing-slash-handler.svg
 [ico-package]: https://img.shields.io/packagist/v/graze/silex-trailing-slash-handler.svg
 [ico-build]: https://img.shields.io/travis/graze/silex-trailing-slash-handler/master.svg
 [ico-engine]: https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg
-[ico-coverage]: https://img.shields.io/scrutinizer/coverage/g/graze/dog-statsd.svg?style=flat-square
-[ico-quality]: https://img.shields.io/scrutinizer/g/graze/dog-statsd.svg?style=flat-square
+[ico-coverage]: https://img.shields.io/scrutinizer/coverage/g/graze/silex-trailing-slash-handler.svg?style=flat-square
+[ico-quality]: https://img.shields.io/scrutinizer/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 
 ## Usage
 
