@@ -45,6 +45,8 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider requestMethodProvider
+     *
+     * @param string $method
      */
     public function testShouldRespondOkWithoutTrailingSlash($method)
     {
@@ -86,6 +88,8 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
      * matter when all routes are defined with a trailing slash.
      *
      * @dataProvider requestMethodProvider
+     *
+     * @param string $method
      */
     public function testShouldRespondOkWithoutTrailingSlashWhenMountedFirst($method)
     {
@@ -127,6 +131,8 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
      * controller providers.
      *
      * @dataProvider requestMethodProvider
+     *
+     * @param string $method
      */
     public function testShouldRespondOkWithoutTrailingSlashWithMountedControllers($method)
     {
@@ -170,6 +176,9 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
+    /**
+     * @return array
+     */
     public function requestMethodProvider()
     {
         return [
@@ -225,6 +234,8 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
      * required when the controller provider is mounted before any other routes.
      *
      * @dataProvider requestMethodProvider
+     *
+     * @param string $method
      */
     public function testWillRespondWithNotFoundForRouteWithNoTrailingSlashWhenMountedFirst($method)
     {
@@ -257,6 +268,8 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
      * mounting the controller provider they should respond as expected.
      *
      * @dataProvider requestMethodProvider
+     *
+     * @param string $method
      */
     public function testWillRespondWithOkForRouteWithNoTrailingSlashWhenMountedLast($method)
     {
@@ -316,7 +329,11 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertRequestQuery($body);
     }
 
-    private function assertRequestQuery($body) {
+    /**
+     * @param array $body
+     */
+    private function assertRequestQuery(array $body)
+    {
         $this->assertArrayHasKey('query', $body);
         $this->assertArrayHasKey('request', $body);
 

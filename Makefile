@@ -1,6 +1,8 @@
 SHELL = /bin/sh
 IMAGE ?= graze/php-alpine
 
+DOCKER_RUN := docker run --rm -it -v $$(pwd):/srv -w /srv ${IMAGE}
+
 .PHONY: install update update-lowest help
 .PHONY: test test-unit test-matrix test-matrix-lowest
 
@@ -22,12 +24,17 @@ composer-%: ## Run a composer command, `make "composer-<command> [...]"`.
         -v ~/.ssh:/root/.ssh:ro \
         composer --ansi --no-interaction $*
 
+lint: ## Run phpcs against the code.
+	${DOCKER_RUN} vendor/bin/phpcs -p --warning-severity=0 src/ tests/
+
+lint-fix: ## Run phpcsf and fix possible lint errors.
+	${DOCKER_RUN} vendor/bin/phpcbf -p src/ tests/
+
 test: ## Run the unit testsuites.
 test: test-unit
 
 test-unit: ## Run the unit testsuite.
-	docker run --rm -it -v $$(pwd):/srv -w /srv ${IMAGE} \
-		vendor/bin/phpunit tests/
+	${DOCKER_RUN} vendor/bin/phpunit tests/
 
 test-matrix: ## Test in multiple images
 	${MAKE} test-unit IMAGE=php:5.6-alpine

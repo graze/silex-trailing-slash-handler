@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e927a8dd342a027d063e24b4d94d6f44",
+    "content-hash": "3ab1f6b52e24e1601b7279041a34d0a5",
     "packages": [
         {
             "name": "pimple/pimple",
@@ -616,6 +616,43 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "graze/standards",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/graze/standards.git",
+                "reference": "4afc1e28509585f149b2a27c9849ca1ed53c3ee9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/graze/standards/zipball/4afc1e28509585f149b2a27c9849ca1ed53c3ee9",
+                "reference": "4afc1e28509585f149b2a27c9849ca1ed53c3ee9",
+                "shasum": ""
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graze Developers",
+                    "email": "developers@graze.com"
+                }
+            ],
+            "description": "Graze coding standards",
+            "homepage": "https://github.com/graze/standards",
+            "keywords": [
+                "coding",
+                "graze",
+                "standards"
+            ],
+            "time": "2017-08-23T09:31:18+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -2018,6 +2055,57 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "3c2d0a0fe39684ba0c1eb842a6a775d0b938d699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/3c2d0a0fe39684ba0c1eb842a6a775d0b938d699",
+                "reference": "3c2d0a0fe39684ba0c1eb842a6a775d0b938d699",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+            },
+            "bin": [
+                "bin/phpcs",
+                "bin/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2017-09-19T22:47:14+00:00"
         },
         {
             "name": "symfony/yaml",

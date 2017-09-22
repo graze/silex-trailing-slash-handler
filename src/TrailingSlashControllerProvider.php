@@ -68,8 +68,8 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
          * @link https://stackoverflow.com/questions/16398471/regex-not-ending-with
          */
         $controllers->match('/{resource}', $handler)
-                    ->assert('resource', '.*(?<!\/)$')
-                    ->bind('no_trailing_slash_handler');
+            ->assert('resource', '.*(?<!\/)$')
+            ->bind('no_trailing_slash_handler');
 
         return $controllers;
     }
@@ -83,13 +83,15 @@ final class TrailingSlashControllerProvider implements ControllerProviderInterfa
          * We override the default RedirectableUrlMatcher so that Silex doesn't
          * respond with 301 to GET requests missing a trailing slash.
          */
-        $app['url_matcher'] = $app->share(function () use ($app) {
-            if ($app['logger']) {
-                $app['logger']->debug(sprintf('Overriding the default Silex url matcher to %s.', UrlMatcher::class));
-            }
+        $app['url_matcher'] = $app->share(
+            function () use ($app) {
+                if ($app['logger']) {
+                    $app['logger']->debug(sprintf('Overriding the default Silex url matcher to %s.', UrlMatcher::class));
+                }
 
-            return new UrlMatcher($app['routes'], $app['request_context']);
-        });
+                return new UrlMatcher($app['routes'], $app['request_context']);
+            }
+        );
     }
 
     /**
