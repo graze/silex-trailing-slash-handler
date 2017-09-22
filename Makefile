@@ -8,7 +8,7 @@ DOCKER_RUN := docker run --rm -it -v $$(pwd):/srv -w /srv ${IMAGE}
 
 .SILENT: help
 
-install: ## Download the dependencies then build the image 🚀 .
+install: ## Install the dependencies
 	${MAKE} 'composer-install -o --prefer-dist'
 
 update: ## Update the dependencies
@@ -54,4 +54,4 @@ help: ## Show this help message.
 	echo "usage: make [target] ..."
 	echo ""
 	echo "targets:"
-	egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | sed -e 's/: \## /!/' | column -t -s '!'
+	egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -s ':#'
