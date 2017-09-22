@@ -8,7 +8,7 @@ DOCKER_RUN := docker run --rm -it -v $$(pwd):/srv -w /srv ${IMAGE}
 
 .SILENT: help
 
-install: ## Download the dependencies then build the image :rocket:.
+install: ## Download the dependencies then build the image 🚀 .
 	${MAKE} 'composer-install -o --prefer-dist'
 
 update: ## Update the dependencies
@@ -37,6 +37,7 @@ test-unit: ## Run the unit testsuite.
 	${DOCKER_RUN} vendor/bin/phpunit tests/
 
 test-matrix: ## Test in multiple images
+test-matrix: update
 	${MAKE} test-unit IMAGE=php:5.6-alpine
 	${MAKE} test-unit IMAGE=php:7.0-alpine
 	${MAKE} test-unit IMAGE=php:7.1-alpine
@@ -48,4 +49,4 @@ help: ## Show this help message.
 	echo "usage: make [target] ..."
 	echo ""
 	echo "targets:"
-	egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
+	egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | sed -e 's/: \## /!/' | column -t -s '!'
