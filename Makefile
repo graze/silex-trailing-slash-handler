@@ -1,40 +1,57 @@
 SHELL = /bin/sh
-PROJECT = graze/silex-trailing-slash-handler
+IMAGE ?= graze/php-alpine
 
-.PHONY: install clean help
-.PHONY: test test-unit test-matrix
+DOCKER_RUN := docker run --rm -it -v $$(pwd):/srv -w /srv ${IMAGE}
+
+.PHONY: install update update-lowest help clean
+.PHONY: test test-unit test-matrix test-matrix-lowest
 
 .SILENT: help
 
-install: ## Download the depenedencies then build the image :rocket:.
-	make 'composer-install --optimize-autoloader --ignore-platform-reqs'
-	docker build --tag ${PROJECT}:latest .
+install: ## Install the dependencies
+	${MAKE} 'composer-install -o --prefer-dist'
+
+update: ## Update the dependencies
+	${MAKE} 'composer-update -o --prefer-dist'
+
+update-lowest: ## Update to the lowest stable dependencies
+	${MAKE} 'composer-update -o --prefer-dist --prefer-lowest --prefer-stable'
 
 composer-%: ## Run a composer command, `make "composer-<command> [...]"`.
 	docker run -it --rm \
-	-v $$(pwd):/app \
-	-v ~/.composer:/root/composer \
-	-v ~/.ssh:/root/.ssh:ro \
-	composer/composer --ansi --no-interaction $*
+        -v $$(pwd):/app \
+        -v ~/.composer:/tmp \
+        -v ~/.ssh:/root/.ssh:ro \
+        composer --ansi --no-interaction $*
+
+
+lint: ## Run phpcs against the code.
+	${DOCKER_RUN} vendor/bin/phpcs -p --warning-severity=0 src/ tests/
+
+lint-fix: ## Run phpcsf and fix possible lint errors.
+	${DOCKER_RUN} vendor/bin/phpcbf -p src/ tests/
 
 test: ## Run the unit testsuites.
 test: test-unit
 
 test-unit: ## Run the unit testsuite.
-	docker run --rm -it -v $$(pwd):/opt/${PROJECT} ${PROJECT} \
-	composer test --ansi
+	${DOCKER_RUN} vendor/bin/phpunit tests/
 
-test-matrix:
-	docker run --rm -it -v $$(pwd):/opt/${PROJECT} -w /opt/${PROJECT} php:5.6-cli \
-	vendor/bin/phpunit --testsuite unit
-	docker run --rm -it -v $$(pwd):/opt/${PROJECT} -w /opt/${PROJECT} php:7.0-cli \
-	vendor/bin/phpunit --testsuite unit
+test-matrix: ## Test in multiple images
+test-matrix: update
+	${MAKE} test-unit IMAGE=php:5.6-alpine
+	${MAKE} test-unit IMAGE=php:7.0-alpine
+	${MAKE} test-unit IMAGE=php:7.1-alpine
 
-clean: ## Clean up any images.
-	docker rmi ${PROJECT}:latest
+test-matrix-lowest: ## Test multiple images
+test-matrix-lowest: update-lowest test-matrix update
+
+
+clean: ## Clean up the local directory
+	git clean -X -d -f
 
 help: ## Show this help message.
 	echo "usage: make [target] ..."
 	echo ""
 	echo "targets:"
-	fgrep --no-filename "##" $(MAKEFILE_LIST) | fgrep --invert-match $$'\t' | sed -e 's/: ## / - /'
+	egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -s ':#'
