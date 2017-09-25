@@ -4,6 +4,7 @@ namespace Graze\Silex\Tests\ControllerProvider;
 
 use Graze\Silex\ControllerProvider\TrailingSlashControllerProvider;
 use Mockery;
+use Psr\Log\LoggerInterface;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
@@ -342,5 +343,31 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('r', $body['request']);
         $this->assertEquals(2, $body['request']['r']);
+    }
+
+    public function testLogging()
+    {
+        $app = new Application();
+
+        $logger = Mockery::mock(LoggerInterface::class)->makePartial()->shouldIgnoreMissing();
+        $app['logger'] = $logger;
+
+        $app->match('/foo/', function () {
+            return 'hunter42';
+        })->method('GET');
+
+        $logger->shouldReceive('debug')
+               ->with('Appending a trailing slash for the request to `/foo`.')
+               ->once();
+        $logger->shouldReceive('debug')
+               ->with('Overriding the default Silex url matcher to Symfony\Component\Routing\Matcher\UrlMatcher.')
+               ->once();
+
+        $app->register(new TrailingSlashControllerProvider());
+        $app->mount('/', new TrailingSlashControllerProvider());
+
+        $request = Request::create('/foo', 'GET');
+        $response = $app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 }
