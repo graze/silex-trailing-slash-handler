@@ -1,10 +1,11 @@
 SHELL = /bin/sh
-IMAGE ?= graze/php-alpine
+IMAGE ?= graze/php-alpine:test
 
 DOCKER_RUN := docker run --rm -it -v $$(pwd):/srv -w /srv ${IMAGE}
 
 .PHONY: install update update-lowest help clean
 .PHONY: test test-unit test-matrix test-matrix-lowest
+.PHONY: test-coverage test-coverage-html test-coverage-clover
 
 .SILENT: help
 
@@ -44,6 +45,15 @@ test-matrix: ## Test in multiple images
 
 test-matrix-lowest: ## Test multiple images
 test-matrix-lowest: update-lowest test-matrix update
+
+test-coverage: ## Run all tests and output coverage to the console.
+	${DOCKER_RUN} phpdbg7 -qrr vendor/bin/phpunit --coverage-text tests/
+
+test-coverage-html: ## Run all tests and output coverage to html.
+	${DOCKER_RUN} phpdbg7 -qrr vendor/bin/phpunit --coverage-html=./tests/report/html tests/
+
+test-coverage-clover: ## Run all tests and output clover coverage to file.
+	${DOCKER_RUN} phpdbg7 -qrr vendor/bin/phpunit --coverage-clover=./tests/report/coverage.clover tests/
 
 
 clean: ## Clean up the local directory
