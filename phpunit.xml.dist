@@ -7,4 +7,11 @@
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
     </listeners>
 
+    <!-- whitelist -->
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+
 </phpunit>
