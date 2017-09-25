@@ -38,7 +38,6 @@ test-unit: ## Run the unit testsuite.
 	${DOCKER_RUN} vendor/bin/phpunit tests/
 
 test-matrix: ## Test in multiple images
-test-matrix: update
 	${MAKE} test-unit IMAGE=php:5.6-alpine
 	${MAKE} test-unit IMAGE=php:7.0-alpine
 	${MAKE} test-unit IMAGE=php:7.1-alpine
