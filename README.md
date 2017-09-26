@@ -13,6 +13,11 @@ appending a slash and issuing an internal sub-request.
 See [silexphp/Silex #149](https://github.com/silexphp/Silex/issues/149) for more
 information about the default Silex routing behavior.
 
+We try to support all commonly used versions of Silex including:
+
+- [Silex 2][silex-2] on [`master`][branch-master] branch, `^2.0` releases
+- [Silex 1.3][silex-1] on [`1.x`][branch-1.x] branch, `^1.0` releases
+
 <!-- Links -->
 [travis]: https://travis-ci.org/graze/silex-trailing-slash-handler
 [lang]: https://secure.php.net
@@ -20,6 +25,10 @@ information about the default Silex routing behavior.
 [license]: https://github.com/graze/silex-trailing-slash-handler/blob/master/LICENSE
 [coverage]: https://scrutinizer-ci.com/g/graze/silex-trailing-slash-handler/code-structure
 [quality]: https://scrutinizer-ci.com/g/graze/silex-trailing-slash-handler
+[silex-2]: https://github.com/silexphp/Silex
+[silex-1]: https://github.com/silexphp/Silex/tree/1.3
+[branch-master]: https://github.com/graze/silex-trailing-slash-handler/tree/master
+[branch-1.x]: https://github.com/graze/silex-trailing-slash-handler/tree/1.x
 
 <!-- Images -->
 [ico-license]: https://img.shields.io/packagist/l/graze/silex-trailing-slash-handler.svg
