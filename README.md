@@ -20,20 +20,36 @@ information about the default Silex routing behavior.
 [license]: https://github.com/graze/silex-trailing-slash-handler/blob/master/LICENSE
 [coverage]: https://scrutinizer-ci.com/g/graze/silex-trailing-slash-handler/code-structure
 [quality]: https://scrutinizer-ci.com/g/graze/silex-trailing-slash-handler
+[silex-2]: https://github.com/silexphp/Silex
+[silex-1]: https://github.com/silexphp/Silex/tree/1.3
+[branch-master]: https://github.com/graze/silex-trailing-slash-handler/tree/master
+[branch-1.x]: https://github.com/graze/silex-trailing-slash-handler/tree/1.x
 
 <!-- Images -->
-[ico-license]: https://img.shields.io/packagist/l/graze/silex-trailing-slash-handler.svg
-[ico-package]: https://img.shields.io/packagist/v/graze/silex-trailing-slash-handler.svg
-[ico-build]: https://img.shields.io/travis/graze/silex-trailing-slash-handler/master.svg
-[ico-engine]: https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg
+[ico-license]: https://img.shields.io/packagist/l/graze/silex-trailing-slash-handler.svg?style=flat-square
+[ico-package]: https://img.shields.io/packagist/v/graze/silex-trailing-slash-handler.svg?style=flat-square
+[ico-build]: https://img.shields.io/travis/graze/silex-trailing-slash-handler/master.svg?style=flat-square
+[ico-engine]: https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg?style=flat-square
 [ico-coverage]: https://img.shields.io/scrutinizer/coverage/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 [ico-quality]: https://img.shields.io/scrutinizer/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 
-## Usage
+## Installation
 
-```bash
-~$ composer require graze/silex-trailing-slash-handler
-```
+We try to support all commonly used versions of Silex including:
+
+- [Silex 2][silex-2] on [`master`][branch-master] branch, `^2.0` releases
+
+    ```bash
+    ~$ composer require graze/silex-trailing-slash-handler
+    ```
+
+- [Silex 1.3][silex-1] on [`1.x`][branch-1.x] branch, `^1.0` releases
+
+    ```bash
+    ~$ composer require graze/silex-trailing-slash-handler:^1.0
+    ```
+
+## Usage
 
 ```php
 $app->get('/', function () {
