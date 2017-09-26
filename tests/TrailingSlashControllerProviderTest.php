@@ -30,7 +30,7 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new TrailingSlashControllerProvider());
 
-        $this->assertInstanceOf(UrlMatcher::class, $app['url_matcher']);
+        $this->assertInstanceOf(UrlMatcher::class, $app['request_matcher']);
     }
 
     public function testShouldMount()
@@ -252,6 +252,38 @@ class TrailingSlashControllerProviderTest extends \PHPUnit_Framework_TestCase
         $app->match('/foo/bar', function () {
             return 'hunter42';
         })->method($method);
+
+        $request = Request::create('/foo', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(404, $response->getStatusCode());
+
+        $request = Request::create('/foo/bar', $method);
+        $response = $app->handle($request);
+
+        $this->assertEquals(404, $response->getStatusCode());
+    }
+
+    /**
+     * This shows that by default it will return 404 when the routes are defined with trailing slashes
+     *
+     * @dataProvider requestMethodProvider
+     *
+     * @param string $method
+     */
+    public function testWillRespondWillNotFoundForRouteWithTrailingSlashWhenNotMounted($method)
+    {
+        $app = new Application();
+
+        $app->match('/foo/', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $app->match('/foo/bar/', function () {
+            return 'hunter42';
+        })->method($method);
+
+        $app->register(new TrailingSlashControllerProvider());
 
         $request = Request::create('/foo', $method);
         $response = $app->handle($request);
