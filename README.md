@@ -13,11 +13,6 @@ appending a slash and issuing an internal sub-request.
 See [silexphp/Silex #149](https://github.com/silexphp/Silex/issues/149) for more
 information about the default Silex routing behavior.
 
-We try to support all commonly used versions of Silex including:
-
-- [Silex 2][silex-2] on [`master`][branch-master] branch, `^2.0` releases
-- [Silex 1.3][silex-1] on [`1.x`][branch-1.x] branch, `^1.0` releases
-
 <!-- Links -->
 [travis]: https://travis-ci.org/graze/silex-trailing-slash-handler
 [lang]: https://secure.php.net
@@ -38,11 +33,23 @@ We try to support all commonly used versions of Silex including:
 [ico-coverage]: https://img.shields.io/scrutinizer/coverage/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 [ico-quality]: https://img.shields.io/scrutinizer/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 
-## Usage
+## Installation
 
-```bash
-~$ composer require graze/silex-trailing-slash-handler
-```
+We try to support all commonly used versions of Silex including:
+
+- [Silex 2][silex-2] on [`master`][branch-master] branch, `^2.0` releases
+
+    ```bash
+    ~$ composer require graze/silex-trailing-slash-handler
+    ```
+
+- [Silex 1.3][silex-1] on [`1.x`][branch-1.x] branch, `^1.0` releases
+
+    ```bash
+    ~$ composer require graze/silex-trailing-slash-handler:^1.0
+    ```
+
+## Usage
 
 ```php
 $app->get('/', function () {
