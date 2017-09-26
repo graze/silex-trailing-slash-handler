@@ -31,10 +31,10 @@ We try to support all commonly used versions of Silex including:
 [branch-1.x]: https://github.com/graze/silex-trailing-slash-handler/tree/1.x
 
 <!-- Images -->
-[ico-license]: https://img.shields.io/packagist/l/graze/silex-trailing-slash-handler.svg
-[ico-package]: https://img.shields.io/packagist/v/graze/silex-trailing-slash-handler.svg
-[ico-build]: https://img.shields.io/travis/graze/silex-trailing-slash-handler/master.svg
-[ico-engine]: https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg
+[ico-license]: https://img.shields.io/packagist/l/graze/silex-trailing-slash-handler.svg?style=flat-square
+[ico-package]: https://img.shields.io/packagist/v/graze/silex-trailing-slash-handler.svg?style=flat-square
+[ico-build]: https://img.shields.io/travis/graze/silex-trailing-slash-handler/master.svg?style=flat-square
+[ico-engine]: https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg?style=flat-square
 [ico-coverage]: https://img.shields.io/scrutinizer/coverage/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 [ico-quality]: https://img.shields.io/scrutinizer/g/graze/silex-trailing-slash-handler.svg?style=flat-square
 
